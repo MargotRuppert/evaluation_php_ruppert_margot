@@ -33,8 +33,11 @@ class SecurityController
 
     //methode pour connecter un user
     public function login() {
-        if (isset($post["submit"])) {
-            $data["message"] = $this->securityService->connexion(new Users($_POST["firstname"],$_POST["lastname"],$_POST["email"],$_POST["password"]));
+        if (isset($_POST["submit"])) {
+            $user = new Users();
+            $user->setEmail($_POST["email"]);
+            $user->setPassword($_POST["password"]);
+            $data["message"] = $this->securityService->connexion($user);
         }
 
         $this->render('login','connexion',$data??[]);

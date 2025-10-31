@@ -52,10 +52,6 @@ class UsersRepository
         $bdd->bindParam(1, $email, \PDO::PARAM_STR);
         $bdd->execute();
         $user = $bdd->fetch(\PDO::FETCH_ASSOC);
-        //Test si l'utilisateur n'existe pas
-        if (!$user) {
-            return null;
-        }
         return $user;
     }
 

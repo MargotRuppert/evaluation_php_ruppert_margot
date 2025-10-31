@@ -72,9 +72,7 @@ class SecurityService
     //test de réussite de connexion ou échec
     private function onAuthentificationSuccess(Users $user): void 
     {
-        $_SESSION["email"] = $user->getEmail();
-        $_SESSION["firstname"] = $user->getFirstname();
-        $_SESSION["lastname"] = $user->getLastname();
+        $_SESSION["Users"] = $user;
         header("Refresh:2; url=/");
     }
 
