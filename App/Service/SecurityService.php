@@ -43,7 +43,7 @@ class SecurityService
             //enregistrement en bdd
             $this->usersRepository->saveUser($user);
         } catch (\PDOException $message) {
-            return "Erreur d'enregistrement";
+            return $message;
         }
         return "Le compte " . $user->getEmail() . " a bien été ajouté en BDD";
 
@@ -52,38 +52,29 @@ class SecurityService
     //methode de la connexion
     public function connexion(array $post): string
     {
-        //Nettoyer
-        // $user = Tools::sanitize($post);
-
-        //Récupére l'objet User
         $user = $this->usersRepository->findUserByEmail($post["email"]);
-        
-        //Si le compte n'existe pas
         if (!isset($user)) {
             return "Les informations de connexion email et ou password sont invalides";
         }
         
-        //test si les champs sont valides
         try {
             $this->validator->validate($user);
         } catch (ValidationException $e) {
             return $e->getMessage();
         }
 
-        //Test si le password est correct
         if ($user instanceof Users && $user->verifPassword($post["password"])) {
             $this->onAuthentificationSuccess($user);
             return "Connecté";
         }
 
         $this->onAuthentificationFailed();
-        
         return "Les informations de connexion email et ou password ne sont pas correctes";
     }
-
+    
+    //test de réussite de connexion ou échec
     private function onAuthentificationSuccess(Users $user): void 
     {
-        //Création des super globales de session
         $_SESSION["email"] = $user->getEmail();
         $_SESSION["firstname"] = $user->getFirstname();
         $_SESSION["lastname"] = $user->getLastname();
@@ -95,8 +86,7 @@ class SecurityService
         session_destroy();
         header("Refresh:3; url=/login");
     }
-
-    //Logique métier de la déconnexion
+    //Deconnexion
     public function deconnexion() {
         session_destroy();
         header("Location:/login");

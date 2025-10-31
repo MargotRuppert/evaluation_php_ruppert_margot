@@ -22,7 +22,7 @@ class UsersRepository
     //bdduete auprès de la bdd
     public function saveUser(Users $user): void
     {
-        $sql = "INSERT INTO users(firstname,lastname,email,`password` VALUE (?,?,?,?)";
+        $sql = "INSERT INTO users(firstname,lastname,email,`password`) VALUES (?,?,?,?)";
         $bdd = $this->connexion->prepare($sql);
         $bdd->bindValue(1, $user->getFirstname(), \PDO::PARAM_STR);
         $bdd->bindValue(2, $user->getLastname(), \PDO::PARAM_STR);
