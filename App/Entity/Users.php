@@ -10,7 +10,7 @@ class Users{
     private ?string $password;
 
     public function __construct(?string $firstname = null, ?string $lastname = null, ?string $email = null, ?string $password = null){
-        $this->firstname = $firstname ;
+        $this->firstname = $firstname;
         $this->lastname = $lastname;
         $this->email = $email;
         $this->password = $password;
