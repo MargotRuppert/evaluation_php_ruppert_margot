@@ -27,14 +27,14 @@ class SecurityController
         }
         
         //rendu de la vue
-        $this->render('register','register', $data ?? []);
+        $this->render('register','register', $data??[]);
     }
 
 
     //methode pour connecter un user
     public function login() {
         if (isset($post["submit"])) {
-            $data["message"] = $this->securityService->connexion($_POST);
+            $data["message"] = $this->securityService->connexion(new Users($_POST["firstname"],$_POST["lastname"],$_POST["email"],$_POST["password"]));
         }
 
         $this->render('login','connexion',$data??[]);

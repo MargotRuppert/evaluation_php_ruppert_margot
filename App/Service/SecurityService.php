@@ -27,9 +27,6 @@ class SecurityService
         if(empty($user->getFirstname()) || empty($user->getLastname()) || empty($user->getEmail() || empty($user->getPassword()))){
             return "Veuillez remplir tous les champs";
         }
-        //Nettoyer les entrées
-        
-        // $user = Tools::sanitize($user);
 
         //Test si l'utilisateur existe 
         if ($this->usersRepository->isUserExistByEmail($user->getEmail())) {
@@ -50,9 +47,9 @@ class SecurityService
     }
 
     //methode de la connexion
-    public function connexion(array $post): string
+    public function connexion(Users $user): string
     {
-        $user = $this->usersRepository->findUserByEmail($post["email"]);
+        $user = $this->usersRepository->findUserByEmail($user->getEmail());
         if (!isset($user)) {
             return "Les informations de connexion email et ou password sont invalides";
         }
@@ -63,7 +60,7 @@ class SecurityService
             return $e->getMessage();
         }
 
-        if ($user instanceof Users && $user->verifPassword($post["password"])) {
+        if ($user instanceof Users && $user->verifPassword($user->getPassword())) {
             $this->onAuthentificationSuccess($user);
             return "Connecté";
         }
@@ -71,7 +68,7 @@ class SecurityService
         $this->onAuthentificationFailed();
         return "Les informations de connexion email et ou password ne sont pas correctes";
     }
-    
+
     //test de réussite de connexion ou échec
     private function onAuthentificationSuccess(Users $user): void 
     {

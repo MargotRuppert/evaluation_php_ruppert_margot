@@ -10,6 +10,7 @@ $dotenv->load();
 session_start();
 
 use App\Controller\SecurityController;
+use App\Controller\BookController;
 
 use Mithridatem\Routing\Route;
 use Mithridatem\Routing\Router;
@@ -21,5 +22,7 @@ $router->map(Route::controller('POST', '/register', SecurityController::class, '
 $router->map(Route::controller('GET', '/login', SecurityController::class, 'login'));
 $router->map(Route::controller('POST', '/login', SecurityController::class, 'login'));
 $router->map(Route::controller('GET', '/logout', SecurityController::class, 'logout'));
+$router->map(Route::controller('GET', '/book', BookController::class, 'book'));
+$router->map(Route::controller('POST', '/book', BookController::class, 'book'));
 
 $router->dispatch();
